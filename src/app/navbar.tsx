@@ -15,7 +15,7 @@ export function Navbar() {
                     <LuMenu className={`text-white transition-all duration-300 ${navOpen ? 'size-0' : 'size-7'}`}/>
                     <LuX className={`text-white transition-all duration-300 ${navOpen ? 'size-7' : 'size-0'}`}/>
                 </button>
-                <ul className={`flex flex-col text-2xl font-medium text-[#80FFDB] sm:hidden gap-3.5 py-24 items-center fixed inset-0 z-10 bg-black/80 transition-transform duration-[350ms] ${navOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                <ul className={`flex flex-col text-2xl font-medium text-[#80FFDB] hover:text-[#2A9D8F] sm:hidden gap-3.5 py-24 items-center fixed inset-0 z-10 bg-black/90 transition-transform duration-[350ms] ${navOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                     <li>
                         <a onClick={() => setNavOpen(!navOpen)} href="#about">
                             About
@@ -34,17 +34,17 @@ export function Navbar() {
                 </ul>
                 <ul className="gap-5 text-lg items-center font-medium text-[#80FFDB] hidden sm:flex">
                     <li>
-                        <a href="#about">
+                        <a href="#about" className="hover:text-[#2A9D8F] transition-colors duration-200">
                             About
                         </a>
                     </li>
                     <li>
-                        <a href="#projects">
+                        <a href="#projects" className="hover:text-[#2A9D8F] transition-colors duration-200">
                             Projects
                         </a>
                     </li>
                     <li>
-                        <a href="#contact">
+                        <a href="#contact" className="hover:text-[#2A9D8F] transition-colors duration-200">
                             Contact
                         </a>
                     </li>

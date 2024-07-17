@@ -6,7 +6,7 @@ export function Navbar() {
     const [navOpen, setNavOpen] = useState(false)
 
     return(
-        <nav className="w-full p-3 md:py-5 md:px-8 flex items-center justify-between">
+        <nav className="w-full p-3 sm:px-5 md:py-5 md:px-8 flex items-center justify-between">
             <div>
                 <p className="text-[#80FFDB] text-4xl font-bold hover:text-[42px] duration-200 select-none">W</p>
             </div>
@@ -32,7 +32,7 @@ export function Navbar() {
                         </a>
                     </li>
                 </ul>
-                <ul className="gap-4 mr-4 items-center font-medium text-[#80FFDB] hidden sm:flex">
+                <ul className="gap-5 text-lg items-center font-medium text-[#80FFDB] hidden sm:flex">
                     <li>
                         <a href="#about">
                             About

@@ -1,11 +1,14 @@
+import { Background } from "./background";
+import { LoadingScreen } from "./loading-screen";
 import { Navbar } from "./navbar"
 
 export default function Home() {
   return (
     <>
+      <LoadingScreen />
+      <Background />
       <Navbar />
-      <div className="h-screen absolute inset-0 -z-10 bg-gradient-to-br from-[#264653] to-[#2a9d8f] "></div>
-      <section id="about" className="">
+      <section id="about" className="flex flex-col md:flex-row mx-4 ">
         
       </section>
     </>

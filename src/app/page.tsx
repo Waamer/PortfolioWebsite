@@ -1,3 +1,5 @@
+import { Assistant } from "./AI-Assistant/assistant";
+import AIChat from "./AI-Assistant/token";
 import { Background } from "./background";
 import { LoadingScreen } from "./loading-screen";
 import { Navbar } from "./navbar"
@@ -13,6 +15,7 @@ export default function Home() {
         <div>
           <h1 className="text-6xl sm:text-7xl font-medium text-[#E9C46A]">Hi! I&apos;m Waleed Aamer</h1>
           <TextFade />
+          <AIChat />
         </div>
       </section>
     </>

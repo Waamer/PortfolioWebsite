@@ -11,11 +11,11 @@ export function Navbar() {
                 <p className="text-[#80FFDB] text-4xl font-bold hover:text-[42px] duration-200 select-none">W</p>
             </div>
             <div>
-                <button onClick={() => setNavOpen(!navOpen)} className="sm:hidden top-5 right-5 absolute z-20">
+                <button onClick={() => setNavOpen(!navOpen)} className="sm:hidden top-5 right-5 absolute z-[2]">
                     <LuMenu className={`text-white transition-all duration-300 ${navOpen ? 'size-0' : 'size-7'}`}/>
                     <LuX className={`text-white transition-all duration-300 ${navOpen ? 'size-7' : 'size-0'}`}/>
                 </button>
-                <ul className={`flex flex-col text-2xl font-medium text-[#80FFDB] hover:text-[#2A9D8F] sm:hidden gap-3.5 py-24 items-center fixed inset-0 z-10 bg-black/90 transition-transform duration-[350ms] ${navOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                <ul className={`flex flex-col text-2xl font-medium text-[#80FFDB] hover:text-[#2A9D8F] sm:hidden gap-3.5 py-24 items-center fixed inset-0 z-[1] bg-black/90 transition-transform duration-[350ms] ${navOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                     <li>
                         <a onClick={() => setNavOpen(!navOpen)} href="#about">
                             About

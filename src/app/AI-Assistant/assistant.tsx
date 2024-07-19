@@ -7,15 +7,16 @@ import { Visualizer } from "react-sound-visualizer";
 import { Messages } from "./messages";
 
 export function Assistant() {
+    const [messageCount, setMessageCount] = useState<number>(1)
     const [isOpen, setIsOpen] = useState(0)
     const [audioStream, setAudioStream] = useState<MediaStream | null>(null)
     const [isRecording, setIsRecording] = useState<boolean>(false)
-    const [transcripts, setTranscripts] = useState<{ text: string; from: string, id: string }[]>([])
-    const [AIResponses, setAIResponses] = useState<{ text: string; from: string, id: string }[]>([
+    const [transcripts, setTranscripts] = useState<{ text: string; from: string, id: number }[]>([])
+    const [AIResponses, setAIResponses] = useState<{ text: string; from: string, id: number }[]>([
         {
             text: `Hi! My name is Bill, Waleed's AI Assistant. How can I help you today?`,
             from: 'AI',
-            id: '' + Date.now()
+            id: 0
         }
     ])
 
@@ -68,6 +69,8 @@ export function Assistant() {
 
     const transcribeAudio = async (audioBlob: Blob) => {
         try {
+            setMessageCount(messageCount + 1)
+            setTranscripts((prevTranscripts) => [...prevTranscripts, { text: 'Loading', from: `Human`, id: messageCount}])
             const formData = new FormData()
             formData.append('file', audioBlob, 'audio.wav')
 
@@ -81,9 +84,8 @@ export function Assistant() {
             }
 
             const data = await response.json()
-            const userTranscript = { text: data.text, from: `Human`, id: '' + Date.now() }
-            setTranscripts((prevTranscripts) => [...prevTranscripts, userTranscript])
-            await GPT(userTranscript.text)
+            updateMessage(data.text, `Human`, messageCount)
+            await GPT(data.text)
         } catch (error) {
             console.error('Error transcribing audio:', error)
         }
@@ -91,6 +93,8 @@ export function Assistant() {
 
     const GPT = async (text: string) => {
         try {
+            setMessageCount(messageCount + 1)
+            setAIResponses((prevResponses) => [...prevResponses, { text: "Loading", from: `AI`, id: messageCount }])
             const response = await fetch('/api/gpt', {
                 method: 'POST',
                 headers: {
@@ -104,12 +108,52 @@ export function Assistant() {
             }
 
             const data = await response.json()
-            const aiResponse = { text: data.choices[0].message.content, from: `AI`, id: '' + Date.now() }
-            setAIResponses((prevResponses) => [...prevResponses, aiResponse])
+            updateMessage(data.choices[0].message.content, 'AI', messageCount)
+            await playTTSAudio(data.choices[0].message.content)
         } catch (error) {
             console.error('Error generating GPT response:', error)
         }
     };
+
+    const playTTSAudio = async (text: string) => {
+        try {
+            const response = await fetch('/api/googleTTS', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error generating GoogleTTS response!')
+            }
+
+            const data = await response.json()
+            const audioSrc = `data:audio/mp3;base64,${data.audioContent}`
+            const audio = new Audio(audioSrc)
+            audio.play()
+
+        } catch (error) {
+            console.error('Error generating GoogleTTS response:', error)
+        }
+    };
+
+    const updateMessage = (newText: string, from: string, id: number) => {
+        if (from === 'Human') {
+            setTranscripts((prevTranscripts) =>
+                prevTranscripts.map((transcript) =>
+                    transcript.id === id ? { ...transcript, text: newText } : transcript
+                )
+            )
+        } else if (from === 'AI') {
+            setAIResponses((prevResponses) =>
+                prevResponses.map((response) =>
+                    response.id === id ? { ...response, text: newText } : response
+                )
+            )
+        }
+    }
 
     return (
         <>

@@ -1,4 +1,3 @@
-// app/api/transcribeAudio/route.ts
 import { NextResponse } from 'next/server';
 
 export const POST = async (req: Request) => {

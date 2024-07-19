@@ -1,71 +1,36 @@
-"use client";
-import { useVoice } from "@humeai/voice-react";
-import Expressions from "./Expressions";
-import { AnimatePresence, motion } from "framer-motion";
-import { ComponentRef, forwardRef } from "react";
+import { cn } from "@/lib/utils";
 
-const Messages = forwardRef<
-  ComponentRef<typeof motion.div>,
-  Record<never, never>
->(function Messages(_, ref) {
-  const { messages } = useVoice();
+export function Messages({ humanMessages }: { humanMessages: { text: string; from: string; id: string }[] }) {
+    // Example AI messages array
+    const AIMessages: { text: string; from: string; id: string }[] = [{ text: 'hi', from: 'AI', id: '' + Date.now() }];
 
-  return (
-    <motion.div
-      layoutScroll
-      className={"grow rounded-md overflow-auto p-4"}
-      ref={ref}
-    >
-      <motion.div
-        className={"max-w-2xl mx-auto w-full flex flex-col gap-4 pb-24"}
-      >
-        <AnimatePresence mode={"popLayout"}>
-          {messages.map((msg, index) => {
-            if (
-              msg.type === "user_message" ||
-              msg.type === "assistant_message"
-            ) {
-              return (
-                <motion.div
-                  key={msg.type + index}
-                  className={`
-                    "w-[80%]",
-                    "bg-card",
-                    "border border-border rounded",
-                    ${msg.type === "user_message" ? "ml-auto" : ""}
-                  `}
-                  initial={{
-                    opacity: 0,
-                    y: 10,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  exit={{
-                    opacity: 0,
-                    y: 0,
-                  }}
-                >
-                  <div
-                    className={`
-                      text-xs capitalize font-medium leading-none opacity-50 pt-4 px-3
-                    `}
-                  >
-                    {msg.message.role}
-                  </div>
-                  <div className={"pb-3 px-3"}>{msg.message.content}</div>
-                  <Expressions values={msg.models.prosody?.scores ?? {}} />
-                </motion.div>
-              );
-            }
+    // Combine human and AI messages
+    const combinedMessages = [...humanMessages, ...AIMessages];
 
-            return null;
-          })}
-        </AnimatePresence>
-      </motion.div>
-    </motion.div>
-  );
-});
+    // Sort messages by id (chronological order)
+    combinedMessages.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
-export default Messages;
+    return (
+        <div className="p-3 mx-auto max-w-5xl">
+            {combinedMessages.length > 0 && (
+                <div className="space-y-2">
+                    {combinedMessages.map(({ text, from, id }) => (
+                        <p
+                            key={id}
+                            className={cn(
+                                {
+                                    "ml-auto": from === 'Human',
+                                    "mr-auto": from !== 'Human'
+                                },
+                                "p-4 rounded-md bg-[#F4A261] w-3/4"
+                            )}
+                        >
+                            <p className="text-xs">{from}</p>
+                            {text}
+                        </p>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}

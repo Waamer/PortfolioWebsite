@@ -4,8 +4,8 @@ import { LuLoader, LuLoader2 } from "react-icons/lu";
 
 export function Messages({ humanMessages, AIMessages }:
 {
-    humanMessages: { text: string; from: string; id: number }[],
-    AIMessages: { text: string; from: string; id: number }[]
+    humanMessages: { text: string; from: string; id: number, hasAnimated?: boolean }[],
+    AIMessages: { text: string; from: string; id: number, hasAnimated?: boolean }[]
 }) {
 
     // Combine human and AI messages
@@ -19,12 +19,11 @@ export function Messages({ humanMessages, AIMessages }:
             <AnimatePresence>
                 {combinedMessages.length > 0 && (
                     <div className="space-y-2">
-                        {combinedMessages.map(({ text, from, id }) => (
+                        {combinedMessages.map(({ text, from, id, hasAnimated = false }) => (
                             <motion.div
                                 key={id + text}
-                                initial={{ opacity: 0, y: 10 }}
+                                initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
                                 transition={{ ease: 'easeInOut', duration: 0.3 }}
                                 className={cn(
                                     {
@@ -34,11 +33,18 @@ export function Messages({ humanMessages, AIMessages }:
                                     "p-4 rounded-md bg-[#F4A261] w-3/4"
                                 )}
                             >
-                                <p className="text-xs">{from}</p>
+                                <p className="text-[13px]">{from}</p>
                                 {text === 'Loading' ? 
                                         <LuLoader2 className="animate-spin mt-1 size-5" />
                                     :
-                                        <p>{text}</p>
+                                    <motion.p
+                                    initial={{ opacity: 0, y: 0 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ ease: 'easeInOut', duration: 0.3 }}
+                                    className="leading-tight"
+                                >
+                                            {text}
+                                            </motion.p>
                                 }
                             </motion.div>
                         ))}

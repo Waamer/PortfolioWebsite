@@ -1,8 +1,8 @@
-import { Assistant } from "./AI-Assistant/assistant";
+import { Assistant } from "../components/AI-Assistant/assistant";
 import { Background } from "./background";
 import { LoadingScreen } from "./loading-screen";
 import { Navbar } from "./navbar"
-import { TextFade } from "./text-fader";
+import { TextFade } from "../components/text-fader";
 
 export default function Home() {
   return (

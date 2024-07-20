@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GPTRole } from '@/app/AI-Assistant/GPTrole'
+import { GPTRole } from '@/components/AI-Assistant/GPTrole'
 
 export const POST = async (req: Request) => {
     try {

@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 import { LuMic, LuPhoneCall, LuStopCircle } from "react-icons/lu";
 import { Visualizer } from "react-sound-visualizer";
 import { Messages } from "./messages";
+import { HiMiniSpeakerWave } from "react-icons/hi2";
 
 export function Assistant() {
     const [messageCount, setMessageCount] = useState<number>(1)
@@ -12,13 +13,16 @@ export function Assistant() {
     const [audioStream, setAudioStream] = useState<MediaStream | null>(null)
     const [isRecording, setIsRecording] = useState<boolean>(false)
     const [transcripts, setTranscripts] = useState<{ text: string; from: string, id: number }[]>([])
-    const [AIResponses, setAIResponses] = useState<{ text: string; from: string, id: number }[]>([
+    const [AIResponses, setAIResponses] = useState<{ text: string; from: string, id: number, hasAnimated?: boolean }[]>([
         {
             text: `Hi! My name is Bill, Waleed's AI Assistant. How can I help you today?`,
             from: 'AI',
-            id: 0
+            id: 0,
+            hasAnimated: true,
         }
     ])
+    const [AITalking, setAITalking] = useState(false)
+    const [responseProcessing, setResponseProcessing] = useState(false)
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<BlobPart[]>([])
@@ -57,6 +61,7 @@ export function Assistant() {
             mediaRecorderRef.current.stop()
             mediaRecorderRef.current = null
         }
+        setResponseProcessing(true)
     };
 
     const handleToggleRecording = () => {
@@ -133,7 +138,8 @@ export function Assistant() {
             const audioSrc = `data:audio/mp3;base64,${data.audioContent}`
             const audio = new Audio(audioSrc)
             audio.play()
-
+            setAITalking(true)
+            audio.onended = () => {setAITalking(false); setResponseProcessing(false)}
         } catch (error) {
             console.error('Error generating GoogleTTS response:', error)
         }
@@ -143,20 +149,19 @@ export function Assistant() {
         if (from === 'Human') {
             setTranscripts((prevTranscripts) =>
                 prevTranscripts.map((transcript) =>
-                    transcript.id === id ? { ...transcript, text: newText } : transcript
+                    transcript.id === id ? { ...transcript, text: newText, hasAnimated: true } : transcript
                 )
             )
         } else if (from === 'AI') {
             setAIResponses((prevResponses) =>
                 prevResponses.map((response) =>
-                    response.id === id ? { ...response, text: newText } : response
+                    response.id === id ? { ...response, text: newText, hasAnimated: true } : response
                 )
             )
         }
     }
 
     return (
-        <>
             <AnimatePresence>
                 <motion.div
                     initial={{ opacity: 0, filter: 'blur(8px)' }}
@@ -177,15 +182,15 @@ export function Assistant() {
                         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
                         transition={{ ease: 'easeInOut', duration: 0.2 }}
-                        className="bg-[#031820]/40 w-screen h-screen absolute top-0 left-0 z-[3] flex items-center justify-center sm:p-6"
+                        className="bg-[#031820]/40 w-screen h-screen absolute top-0 left-0 z-[3] flex items-center justify-center md:p-6"
                     >
-                        <div className="bg-[#FFFFF0]/[94%] max-w-2xl w-full h-full z-[3] sm:rounded-md">
-                            <div className="absolute bg-[#FFFFF0] border-b-2 border-black max-w-2xl w-full sm:rounded-t-lg">
+                        <div className="bg-[#FFFFF0]/[94%] md:max-w-2xl w-full h-full z-[3] md:rounded-md">
+                            <div className="fixed bg-[#FFFFF0] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
                             <div className="flex gap-2 ml-1.5 my-1">
-                                <button onClick={() => setIsOpen(isOpen + 1)} className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/50 text-nowrap">
+                                <button onClick={() => setIsOpen(isOpen + 1)} className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 text-nowrap">
                                     End Call
                                 </button>
-                                <button onClick={handleToggleRecording} className="flex items-center px-1.5 py-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/50">
+                                <button onClick={handleToggleRecording} disabled={responseProcessing} className="flex items-center px-1.5 py-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 disabled:bg-[#F4A261]/50 disabled:cursor-not-allowed">
                                     {!isRecording ? (<LuMic className="size-5" />) : <LuStopCircle className="size-5 text-red-600 animate-pulse" />}
                                 </button>
                                 {isRecording && (
@@ -195,6 +200,9 @@ export function Assistant() {
                                         )}
                                     </Visualizer>
                                 )}
+                                {AITalking && (
+                                    <HiMiniSpeakerWave className="animate-pulse size-6 my-auto"/>
+                                )}
                                 </div>
                             </div>
                             <Messages humanMessages={transcripts} AIMessages={AIResponses} />
@@ -202,6 +210,5 @@ export function Assistant() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </>
     );
 }

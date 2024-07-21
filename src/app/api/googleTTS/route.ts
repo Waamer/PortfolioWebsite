@@ -27,8 +27,6 @@ export const POST = async (req: Request) => {
             })
         });
 
-        console.log('Google TTS API response status:', response.status);
-
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Google TTS API response text:', errorText);
@@ -36,7 +34,6 @@ export const POST = async (req: Request) => {
         }
 
         const data = await response.json();
-        console.log('Google TTS API response data:', data);
 
         return NextResponse.json(data);
     } catch (error) {

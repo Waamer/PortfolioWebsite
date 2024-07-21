@@ -1,7 +1,7 @@
 // Assistant.tsx
 'use client';
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { LuMic, LuPhoneCall, LuStopCircle } from "react-icons/lu";
 import { Visualizer } from "react-sound-visualizer";
 import { Messages } from "./messages";
@@ -26,6 +26,18 @@ export function Assistant() {
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<BlobPart[]>([])
+
+    useEffect(() => {
+        if (isOpen % 2 === 1) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isOpen]);
 
     const startRecording = () => {
         setIsRecording(true)
@@ -167,7 +179,7 @@ export function Assistant() {
                     initial={{ opacity: 0, filter: 'blur(8px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ ease: 'easeInOut', duration: 0.7, delay: 2 }}
-                    className="absolute bottom-5 right-5"
+                    className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-[20]"
                 >
                     <button onClick={() => setIsOpen(isOpen + 1)} className="flex gap-1.5 items-center px-2.5 py-1.5 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#E9C46A]">
                         <LuPhoneCall />
@@ -182,10 +194,10 @@ export function Assistant() {
                         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
                         transition={{ ease: 'easeInOut', duration: 0.2 }}
-                        className="bg-[#031820]/40 w-screen h-screen absolute top-0 left-0 z-[3] flex items-center justify-center md:p-6"
+                        className="bg-[#031820]/40 w-screen h-screen fixed top-0 left-0 z-[21] flex items-center justify-center md:p-6"
                     >
-                        <div className="bg-[#FFFFF0]/[94%] md:max-w-2xl w-full h-full z-[3] md:rounded-md">
-                            <div className="fixed bg-[#FFFFF0] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
+                        <div className="bg-[#FFFFF0] md:max-w-2xl w-full h-full z-[21] md:rounded-md">
+                            <div className="fixed bg-[#FFFFF2] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
                             <div className="flex gap-2 ml-1.5 my-1">
                                 <button onClick={() => setIsOpen(isOpen + 1)} className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 text-nowrap">
                                     End Call

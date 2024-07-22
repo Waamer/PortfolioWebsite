@@ -52,7 +52,7 @@ export function Navbar() {
                     </ul>
                 </div>
             </nav>
-            <ul className={`flex flex-col text-2xl font-medium text-[#80FFDB] hover:text-[#2A9D8F] sm:hidden gap-3.5 py-24 items-center fixed inset-0 z-[10] bg-black/90 transition-transform duration-[350ms] ${navOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <ul className={`flex flex-col text-2xl font-medium text-[#80FFDB] hover:text-[#2A9D8F] sm:hidden gap-2.5 py-24 items-center fixed inset-0 z-[10] bg-black/95 transition-transform duration-[350ms] ${navOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <li>
                     <a onClick={() => setNavOpen(!navOpen)} href="#about">
                         About

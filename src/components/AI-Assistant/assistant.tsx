@@ -1,4 +1,3 @@
-// Assistant.tsx
 'use client';
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
@@ -179,7 +178,7 @@ export function Assistant() {
                     initial={{ opacity: 0, filter: 'blur(8px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ ease: 'easeInOut', duration: 0.7, delay: 2 }}
-                    className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-[20]"
+                    className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-[9]"
                 >
                     <button onClick={() => setIsOpen(isOpen + 1)} className="flex gap-1.5 items-center px-2.5 py-1.5 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#E9C46A]">
                         <LuPhoneCall />

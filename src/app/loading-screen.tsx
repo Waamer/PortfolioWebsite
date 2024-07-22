@@ -4,8 +4,12 @@ import { useEffect, useState } from "react"
 export function LoadingScreen() {
     const [loaderSecs, setLoaderSecs] = useState(0)
     useEffect(() => {
+        document.body.style.overflow = 'hidden'
         const timer = setTimeout(() => {
-            if (loaderSecs == 100) return () => clearTimeout(timer)
+            if (loaderSecs == 100) {
+                document.body.style.overflow = 'auto'
+                return () => clearTimeout(timer)
+            }
             setLoaderSecs(loaderSecs + 2)
         }, 1)
     }, [loaderSecs])

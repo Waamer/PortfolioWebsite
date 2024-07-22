@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        'smH': {'raw': '(max-height: 600px)'},
-        'mdH': {'raw': '(max-height: 800px)'},
+        'smH': {'raw': '(max-height: 750px)'},
+        'mdH': {'raw': '(min-height: 850px)'},
       }
     },
   },

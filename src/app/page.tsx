@@ -11,16 +11,20 @@ export default function Home() {
       <LoadingScreen />
       <Background />
       <Navbar />
-      <section id="home" className="flex flex-col justify-center items-center mx-4">
-        <div className="md:mt-4">
-          <h1 className="text-6xl sm:text-7xl font-medium text-[#E9C46A]">Hi! I&apos;m Waleed Aamer</h1>
+      <section
+        id="home"
+        className="w-screen h-screen flex flex-col justify-start items-center px-4"
+        style={{ height: `calc(100dvh - var(--navbar-height))` }}
+      >
+        <div >
+          <h1 className="text-6xl sm:text-7xl font-medium text-[#E9C46A]">Hi! I&apos;m Waleed Aamer.</h1>
           <TextFade />
           <Assistant />
         </div>
         <DisplayModel />
       </section>
-      <section id="about" className="flex flex-col justify-center items-center mx-4 -mt-[20vh]">
-        <h1>About</h1>
+      <section id="about" className="flex flex-col justify-center items-center h-screen w-screen ">
+        
       </section>
     </>
   );

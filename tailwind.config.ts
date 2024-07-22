@@ -11,6 +11,7 @@ const config: Config = {
       screens: {
         'smH': {'raw': '(max-height: 750px)'},
         'mdH': {'raw': '(min-height: 850px)'},
+        'xs': {'raw': '(max-width: 420px)'},
       }
     },
   },

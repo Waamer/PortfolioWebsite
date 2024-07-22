@@ -26,7 +26,7 @@ export function Navbar() {
         <>
             <nav className={`w-full h-fit sticky top-0 z-[11] p-3 sm:px-5 md:py-5 md:px-8 flex items-center justify-between transition-all duration-300 ${navColor && !navOpen ? 'bg-black/5 backdrop-blur-[2px] md:backdrop-blur-[1px]' : ''}`}>
                 <div>
-                    <p className="text-[#80FFDB] text-4xl font-bold hover:text-[42px] duration-200 select-none">W</p>
+                    <p className="text-[#80FFDB] text-4xl font-bold sm:hover:text-[42px] duration-200 select-none">W</p>
                 </div>
                 <div>
                     <button onClick={() => setNavOpen(!navOpen)} className="sm:hidden top-5 right-5 absolute z-[11]">

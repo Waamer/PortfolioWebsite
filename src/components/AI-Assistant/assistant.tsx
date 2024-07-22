@@ -7,43 +7,43 @@ import { Messages } from "./messages";
 import { HiMiniSpeakerWave } from "react-icons/hi2";
 
 export function Assistant() {
-    const [messageCount, setMessageCount] = useState<number>(1)
     const [isOpen, setIsOpen] = useState(0)
     const [audioStream, setAudioStream] = useState<MediaStream | null>(null)
     const [isRecording, setIsRecording] = useState<boolean>(false)
-    const [transcripts, setTranscripts] = useState<{ text: string; from: string, id: number }[]>([])
-    const [AIResponses, setAIResponses] = useState<{ text: string; from: string, id: number, hasAnimated?: boolean }[]>([
+    const [transcripts, setTranscripts] = useState<{ text: string; from: string; id: number; hasAnimated?: boolean }[]>([])
+    const [AIResponses, setAIResponses] = useState<{ text: string; from: string; id: number; hasAnimated?: boolean }[]>([
         {
             text: `Hi! My name is Bill, Waleed's AI Assistant. How can I help you today?`,
             from: 'AI',
             id: 0,
             hasAnimated: true,
         }
-    ])
+    ]);
     const [AITalking, setAITalking] = useState(false)
     const [responseProcessing, setResponseProcessing] = useState(false)
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<BlobPart[]>([])
+    const messageCountRef = useRef<number>(1)
 
     useEffect(() => {
         if (isOpen % 2 === 1) {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'
         } else {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'
         }
 
         return () => {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'
         };
-    }, [isOpen]);
+    }, [isOpen])
 
     const startRecording = () => {
         setIsRecording(true)
         navigator.mediaDevices
             .getUserMedia({ audio: true, video: false })
             .then((stream) => {
-                setAudioStream(stream)
+                setAudioStream(stream);
                 const mediaRecorder = new MediaRecorder(stream)
                 mediaRecorderRef.current = mediaRecorder
 
@@ -72,7 +72,7 @@ export function Assistant() {
             mediaRecorderRef.current.stop()
             mediaRecorderRef.current = null
         }
-        setResponseProcessing(true)
+        setResponseProcessing(true);
     };
 
     const handleToggleRecording = () => {
@@ -85,9 +85,14 @@ export function Assistant() {
 
     const transcribeAudio = async (audioBlob: Blob) => {
         try {
-            setMessageCount(messageCount + 1)
-            setTranscripts((prevTranscripts) => [...prevTranscripts, { text: 'Loading', from: `Human`, id: messageCount}])
-            const formData = new FormData()
+            const currentMessageCount = messageCountRef.current
+            setTranscripts((prevTranscripts) => [
+                ...prevTranscripts,
+                { text: 'Loading', from: 'Human', id: currentMessageCount },
+            ]);
+            messageCountRef.current += 1;
+
+            const formData = new FormData();
             formData.append('file', audioBlob, 'audio.wav')
 
             const response = await fetch('/api/transcribeAudio', {
@@ -100,8 +105,8 @@ export function Assistant() {
             }
 
             const data = await response.json()
-            updateMessage(data.text, `Human`, messageCount)
-            await GPT(data.text)
+            updateMessage(data.text, 'Human', currentMessageCount)
+            await GPT(data.text);
         } catch (error) {
             console.error('Error transcribing audio:', error)
         }
@@ -109,8 +114,13 @@ export function Assistant() {
 
     const GPT = async (text: string) => {
         try {
-            setMessageCount(messageCount + 1)
-            setAIResponses((prevResponses) => [...prevResponses, { text: "Loading", from: `AI`, id: messageCount }])
+            const currentMessageCount = messageCountRef.current
+            setAIResponses((prevResponses) => [
+                ...prevResponses,
+                { text: 'Loading', from: 'AI', id: currentMessageCount },
+            ]);
+            messageCountRef.current += 1
+
             const response = await fetch('/api/gpt', {
                 method: 'POST',
                 headers: {
@@ -124,8 +134,8 @@ export function Assistant() {
             }
 
             const data = await response.json()
-            updateMessage(data.choices[0].message.content, 'AI', messageCount)
-            await playTTSAudio(data.choices[0].message.content)
+            updateMessage(data.choices[0].message.content, 'AI', currentMessageCount)
+            await playTTSAudio(data.choices[0].message.content);
         } catch (error) {
             console.error('Error generating GPT response:', error)
         }
@@ -145,12 +155,12 @@ export function Assistant() {
                 throw new Error('Error generating GoogleTTS response!')
             }
 
-            const data = await response.json()
+            const data = await response.json();
             const audioSrc = `data:audio/mp3;base64,${data.audioContent}`
-            const audio = new Audio(audioSrc)
-            audio.play()
-            setAITalking(true)
-            audio.onended = () => {setAITalking(false); setResponseProcessing(false)}
+            const audio = new Audio(audioSrc);
+            audio.play();
+            setAITalking(true);
+            audio.onended = () => { setAITalking(false); setResponseProcessing(false); }
         } catch (error) {
             console.error('Error generating GoogleTTS response:', error)
         }
@@ -162,41 +172,41 @@ export function Assistant() {
                 prevTranscripts.map((transcript) =>
                     transcript.id === id ? { ...transcript, text: newText, hasAnimated: true } : transcript
                 )
-            )
+            );
         } else if (from === 'AI') {
             setAIResponses((prevResponses) =>
                 prevResponses.map((response) =>
                     response.id === id ? { ...response, text: newText, hasAnimated: true } : response
                 )
-            )
+            );
         }
-    }
+    };
 
     return (
-            <AnimatePresence>
-                <motion.div
-                    initial={{ opacity: 0, filter: 'blur(8px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ ease: 'easeInOut', duration: 0.7, delay: 2 }}
-                    className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-[9]"
-                >
-                    <button onClick={() => setIsOpen(isOpen + 1)} className="flex gap-1.5 items-center px-2.5 py-1.5 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#E9C46A]">
-                        <LuPhoneCall />
-                        Call my AI Assistant
-                    </button>
-                </motion.div>
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 0, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                transition={{ ease: 'easeInOut', duration: 0.7, delay: 2 }}
+                className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-[9]"
+            >
+                <button onClick={() => setIsOpen(isOpen + 1)} className="flex gap-1.5 items-center px-2.5 py-1.5 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#E9C46A]">
+                    <LuPhoneCall />
+                    Call my AI Assistant
+                </button>
+            </motion.div>
 
-                {isOpen % 2 === 1 && (
-                    <motion.div
-                        key={isOpen}
-                        initial={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
-                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
-                        transition={{ ease: 'easeInOut', duration: 0.2 }}
-                        className="bg-[#031820]/40 w-screen h-screen fixed top-0 left-0 z-[21] flex items-center justify-center md:p-6"
-                    >
-                        <div className="bg-[#FFFFF0] md:max-w-2xl w-full h-full z-[21] md:rounded-md">
-                            <div className="fixed bg-[#FFFFF2] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
+            {isOpen % 2 === 1 && (
+                <motion.div
+                    key={isOpen}
+                    initial={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
+                    transition={{ ease: 'easeInOut', duration: 0.2 }}
+                    className="bg-[#031820]/40 w-screen h-[100dvh] fixed top-0 left-0 z-[21] flex items-center justify-center md:p-6"
+                >
+                    <div className="bg-[#FFFFF0] md:max-w-2xl w-full h-full z-[21] md:rounded-md">
+                        <div className="fixed bg-[#FFFFF2] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
                             <div className="flex gap-2 ml-1.5 my-1">
                                 <button onClick={() => setIsOpen(isOpen + 1)} className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 text-nowrap">
                                     End Call
@@ -204,22 +214,23 @@ export function Assistant() {
                                 <button onClick={handleToggleRecording} disabled={responseProcessing} className="flex items-center px-1.5 py-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 disabled:bg-[#F4A261]/50 disabled:cursor-not-allowed">
                                     {!isRecording ? (<LuMic className="size-5" />) : <LuStopCircle className="size-5 text-red-600 animate-pulse" />}
                                 </button>
-                                {isRecording && (
-                                    <Visualizer audio={audioStream} mode={'continuous'} slices={26} strokeColor='#264653' autoStart={true}>
+                                {isRecording && audioStream && <Visualizer audio={audioStream} mode={'continuous'} slices={26} strokeColor='#264653' autoStart={true}>
                                         {({ canvasRef }) => (
                                             <canvas ref={canvasRef} height={100} className="w-full max-w-[200px] sm:max-w-[150px] max-h-[40px] mx-0.5 pr-0.5" />
                                         )}
-                                    </Visualizer>
-                                )}
+                                    </Visualizer>}
                                 {AITalking && (
-                                    <HiMiniSpeakerWave className="animate-pulse size-6 my-auto"/>
+                                    <div className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md text-sm font-medium bg-[#F4A261]/50 transition-all duration-200 text-nowrap animate-pulse">
+                                        <HiMiniSpeakerWave className="mr-1" />
+                                        Talking
+                                    </div>
                                 )}
-                                </div>
                             </div>
-                            <Messages humanMessages={transcripts} AIMessages={AIResponses} />
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                        <Messages humanMessages={transcripts} AIMessages={AIResponses} />
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }

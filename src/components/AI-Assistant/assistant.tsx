@@ -86,10 +86,16 @@ export function Assistant() {
     const transcribeAudio = async (audioBlob: Blob) => {
         try {
             const currentMessageCount = messageCountRef.current;
+
+            setTranscripts((prevTranscripts) =>
+                prevTranscripts.filter((transcript) => transcript.from !== 'Human' || transcript.hasAnimated)
+            );
+    
             setTranscripts((prevTranscripts) => [
                 ...prevTranscripts,
                 { text: 'Loading', from: 'Human', id: currentMessageCount },
             ]);
+    
             messageCountRef.current += 1;
     
             const formData = new FormData();
@@ -105,23 +111,10 @@ export function Assistant() {
             }
     
             const data = await response.json();
-            console.log('Transcription response:', data);
-            
-            // Ensure the message is updated only once
-            setTranscripts((prevTranscripts) =>
-                prevTranscripts.map((transcript) =>
-                    transcript.id === currentMessageCount ? { ...transcript, text: data.text, hasAnimated: true } : transcript
-                )
-            );
-    
+            updateMessage(data.text, 'Human', currentMessageCount);
             await GPT(data.text);
         } catch (error) {
             console.error('Error transcribing audio:', error);
-            setTranscripts((prevTranscripts) =>
-                prevTranscripts.map((transcript) =>
-                    transcript.id === messageCountRef.current ? { ...transcript, text: 'Error transcribing audio', hasAnimated: true } : transcript
-                )
-            );
         }
     };
     

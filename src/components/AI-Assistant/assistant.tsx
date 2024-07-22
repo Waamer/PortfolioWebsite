@@ -85,32 +85,46 @@ export function Assistant() {
 
     const transcribeAudio = async (audioBlob: Blob) => {
         try {
-            const currentMessageCount = messageCountRef.current
+            const currentMessageCount = messageCountRef.current;
             setTranscripts((prevTranscripts) => [
                 ...prevTranscripts,
                 { text: 'Loading', from: 'Human', id: currentMessageCount },
             ]);
             messageCountRef.current += 1;
-
+    
             const formData = new FormData();
-            formData.append('file', audioBlob, 'audio.wav')
-
+            formData.append('file', audioBlob, 'audio.wav');
+    
             const response = await fetch('/api/transcribeAudio', {
                 method: 'POST',
                 body: formData,
             });
-
+    
             if (!response.ok) {
-                throw new Error('Error transcribing audio')
+                throw new Error('Error transcribing audio');
             }
-
-            const data = await response.json()
-            updateMessage(data.text, 'Human', currentMessageCount)
+    
+            const data = await response.json();
+            console.log('Transcription response:', data);
+            
+            // Ensure the message is updated only once
+            setTranscripts((prevTranscripts) =>
+                prevTranscripts.map((transcript) =>
+                    transcript.id === currentMessageCount ? { ...transcript, text: data.text, hasAnimated: true } : transcript
+                )
+            );
+    
             await GPT(data.text);
         } catch (error) {
-            console.error('Error transcribing audio:', error)
+            console.error('Error transcribing audio:', error);
+            setTranscripts((prevTranscripts) =>
+                prevTranscripts.map((transcript) =>
+                    transcript.id === messageCountRef.current ? { ...transcript, text: 'Error transcribing audio', hasAnimated: true } : transcript
+                )
+            );
         }
     };
+    
 
     const GPT = async (text: string) => {
         try {

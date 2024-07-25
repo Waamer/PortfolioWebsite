@@ -1,9 +1,9 @@
 'use client'
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 export function TextFade() {
-    const words = ['software developer.', 'weight lifter.', 'CS student.', 'proud Muslim.', 'web-dev enthusiast']
+    const words = useMemo(() => ['software developer.', 'weight lifter.', 'CS student.', 'proud Muslim.', 'web-dev enthusiast.'], [])
     const [currentWord, setCurrentWord] = useState(words[0])
 
     useEffect(() => {

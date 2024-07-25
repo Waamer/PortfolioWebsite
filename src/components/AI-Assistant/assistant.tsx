@@ -25,6 +25,7 @@ export function Assistant() {
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<BlobPart[]>([])
     const messageCountRef = useRef<number>(1)
+    const audioRef = useRef<HTMLAudioElement | null>(null)
 
     useEffect(() => {
         if (isOpen % 2 === 1) {
@@ -164,9 +165,10 @@ export function Assistant() {
 
             const data = await response.json();
             const audioSrc = `data:audio/mp3;base64,${data.audioContent}`
-            const audio = new Audio(audioSrc);
-            audio.play();
-            setAITalking(true);
+            const audio = new Audio(audioSrc)
+            audioRef.current = audio
+            audio.play()
+            setAITalking(true)
             audio.onended = () => { setAITalking(false); setResponseProcessing(false); }
         } catch (error) {
             console.error('Error generating GoogleTTS response:', error)
@@ -189,12 +191,38 @@ export function Assistant() {
         }
     };
 
+    const endCall = () => {
+        setIsOpen(isOpen + 1)
+        mediaRecorderRef.current = null
+        chunksRef.current = []
+        messageCountRef.current = 1
+        setAudioStream(null)
+        setIsRecording(false)
+        setResponseProcessing(false)
+        setAITalking(false)
+        setTranscripts([])
+        setAIResponses([
+            {
+                text: `Hi! My name is Bill, Waleed's AI Assistant. How can I help you today?`,
+                from: 'AI',
+                id: 0,
+                hasAnimated: true,
+            }
+        ])
+        if (audioRef.current) {
+            audioRef.current.pause()
+            audioRef.current = null
+        }
+    }
+
     return (
         <AnimatePresence>
             <motion.div
                 initial={{ opacity: 0, filter: 'blur(8px)' }}
                 animate={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ ease: 'easeInOut', duration: 0.7, delay: 2 }}
+                whileHover={{ scale: 1.075 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ ease: 'easeInOut', duration: 1, type: "spring", stiffness: 300 }}
                 className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-[9]"
             >
                 <button onClick={() => setIsOpen(isOpen + 1)} className="flex gap-1.5 items-center px-2.5 py-1.5 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#E9C46A]">
@@ -215,7 +243,7 @@ export function Assistant() {
                     <div className="bg-[#FFFFF0] md:max-w-2xl w-full h-full z-[21] md:rounded-md">
                         <div className="fixed bg-[#FFFFF2] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
                             <div className="flex gap-2 ml-1.5 my-1">
-                                <button onClick={() => setIsOpen(isOpen + 1)} className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 text-nowrap">
+                                <button onClick={endCall} className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 text-nowrap">
                                     End Call
                                 </button>
                                 <button onClick={handleToggleRecording} disabled={responseProcessing} className="flex items-center px-1.5 py-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 disabled:bg-[#F4A261]/50 disabled:cursor-not-allowed">

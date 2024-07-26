@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  cursor: none;
-}
-*:focus {
-  cursor: none;
-}
-*:hover {
-  cursor: none;
-}
 
 progress::-moz-progress-bar { background: #41190f; }
 progress::-webkit-progress-value { background: #41190f; }

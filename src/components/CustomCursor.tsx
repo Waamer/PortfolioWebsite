@@ -1,4 +1,3 @@
-// components/CustomCursor.tsx
 'use client'
 import { motion, useMotionValue } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -15,8 +14,8 @@ export function CustomCursor({ brandName, cursorType }: CustomCursorProps) {
 
     useEffect(() => {
         const mouseMove = (e: { clientX: number; clientY: number }) => {
-            x.set(e.clientX - 12);
-            y.set(e.clientY - 12);
+            x.set(e.clientX - 8);
+            y.set(e.clientY - 8);
         };
 
         const handleMouseDown = () => setMouseDown(true);
@@ -38,7 +37,7 @@ export function CustomCursor({ brandName, cursorType }: CustomCursorProps) {
             height: 12,
             width: 12,
             backgroundColor: 'black',
-            scale: mouseDown ? 0.6 : 1,
+            scale: mouseDown ? 0.5 : 1,
         },
         text: {
             height: 150,
@@ -62,6 +61,7 @@ export function CustomCursor({ brandName, cursorType }: CustomCursorProps) {
             left: -40,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
+            scale: mouseDown ? 0.8 : 1,
         },
     };
 

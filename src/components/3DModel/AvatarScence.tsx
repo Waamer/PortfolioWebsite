@@ -29,18 +29,18 @@ const Avatar: React.FC = () => {
       const handleMouseDown = (event: MouseEvent) => {
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
-
+      
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
+      
         raycaster.setFromCamera(mouse, perspectiveCamera);
         const intersects = raycaster.intersectObject(invisibleMesh, true);
-
-        if (intersects.length > 0 && !isStumbling) {
+      
+        if (intersects.length > 0 && intersects[0].object === invisibleMesh && !isStumbling) {
           setIsStumbling(true);
           stumbleAction?.reset().play();
           waveAction?.fadeOut(0.3);
-
+      
           setTimeout(() => {
             waveAction?.reset().fadeIn(0.3);
             stumbleAction?.fadeOut(0.3);
@@ -48,6 +48,7 @@ const Avatar: React.FC = () => {
           }, 1850);
         }
       };
+      
 
       const groundGeometry = new THREE.CylinderGeometry(0.6, 0.6, 0.1, 64);
       const groundMaterial = new THREE.MeshStandardMaterial({ color: '#F4A261' });
@@ -57,7 +58,7 @@ const Avatar: React.FC = () => {
       groundMesh.position.y -= 0.05;
       scene.add(groundMesh);
 
-      const invisibleGeometry = new THREE.CylinderGeometry(0.6, 0.6, 0.8, 64);
+      const invisibleGeometry = new THREE.CylinderGeometry(0.6, 0.6, 1.8, 64);
       const invisibleMaterial = new THREE.MeshStandardMaterial({ color: '#F4A261', opacity: 0, transparent: true });
       const invisibleMesh = new THREE.Mesh(invisibleGeometry, invisibleMaterial);
       invisibleMesh.position.y += 0.8;
@@ -86,6 +87,12 @@ const Avatar: React.FC = () => {
 
       return () => {
         window.removeEventListener('mousedown', handleMouseDown);
+        scene.remove(groundMesh);
+        scene.remove(invisibleMesh);
+        invisibleMesh.geometry.dispose();
+        invisibleMesh.material.dispose();
+        groundMesh.geometry.dispose()
+        groundMesh.material.dispose
       };
     }
   }, [actions, perspectiveCamera, size, isStumbling, scene]);

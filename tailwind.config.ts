@@ -12,6 +12,7 @@ const config: Config = {
         'smH': {'raw': '(max-height: 750px)'},
         'mdH': {'raw': '(min-height: 850px)'},
         'xs': {'raw': '(max-width: 420px)'},
+        'xsH': {'raw': '(max-height: 620px)'},
       }
     },
   },

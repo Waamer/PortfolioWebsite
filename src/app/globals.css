@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  max-width: 100%;
+  scroll-behavior: smooth;
+}
+
 progress::-moz-progress-bar { 
   background-color: #41190f; 
 }
@@ -24,10 +29,6 @@ progress {
 progress::-webkit-progress-bar {
   background-color: transparent;
   border-radius: 4px;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 :root {

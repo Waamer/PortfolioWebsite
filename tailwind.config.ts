@@ -10,9 +10,11 @@ const config: Config = {
     extend: {
       screens: {
         'smH': {'raw': '(max-height: 750px)'},
-        'mdH': {'raw': '(min-height: 850px)'},
+        'mdH': {'raw': '(max-height: 849px)'},
+        'lgH': {'raw': '(min-height: 850px)'},
         'xs': {'raw': '(max-width: 420px)'},
         'xsH': {'raw': '(max-height: 620px)'},
+        'xlH': {'raw': '(min-height: 1000px)'},
       }
     },
   },

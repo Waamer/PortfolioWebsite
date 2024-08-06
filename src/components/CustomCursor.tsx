@@ -14,8 +14,8 @@ export function CustomCursor({ brandName, cursorType }: CustomCursorProps) {
 
     useEffect(() => {
         const mouseMove = (e: { clientX: number; clientY: number }) => {
-            x.set(e.clientX - 8);
-            y.set(e.clientY - 8);
+            x.set(e.clientX - 6);
+            y.set(e.clientY - 6);
         };
 
         const handleMouseDown = () => setMouseDown(true);

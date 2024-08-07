@@ -14,7 +14,7 @@ export function Messages({ humanMessages, AIMessages }:
     combinedMessages.sort((a, b) => (a.id) - (b.id));
 
     return (
-        <div className="p-3 pt-16 mx-auto max-w-5xl max-h-full overflow-y-scroll">
+        <div className="p-3 pt-16 mx-auto max-w-5xl max-h-full overflow-y-auto">
             <AnimatePresence>
                 {combinedMessages.length > 0 && (
                     <div className="space-y-2">

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react"
 
 export function TextFade() {
-    const words = useMemo(() => ['software developer.', 'weight lifter.', 'CS student.', 'proud Muslim.', 'web-dev enthusiast.'], [])
+    const words = useMemo(() => ['web developer.', 'weight lifter.', 'CS student.', 'proud Muslim.'], [])
     const [currentWord, setCurrentWord] = useState(words[0])
 
     useEffect(() => {
@@ -12,7 +12,7 @@ export function TextFade() {
                 const nextIndex = (words.indexOf(prev) + 1) % words.length;
                 return words[nextIndex];
             });
-        }, 3000);
+        }, 2000);
 
         return () => clearInterval(interval);
     }, [words]);
@@ -25,7 +25,7 @@ export function TextFade() {
                     initial={{ opacity: 0, y: 8, filter: 'blur(8px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                     exit={{ opacity: 0, y: -8, filter: 'blur(8px)' }}
-                    transition={{ ease: 'easeInOut', duration: 0.7 }}
+                    transition={{ ease: 'easeInOut', duration: 0.6 }}
                     className="absolute w-full"
                 >
                     <h1 className="text-6xl font-medium text-[#E9C46A]">{currentWord}</h1>

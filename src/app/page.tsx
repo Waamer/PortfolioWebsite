@@ -13,6 +13,7 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { LuConstruction, LuExternalLink } from "react-icons/lu";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 
 export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false);
@@ -39,7 +40,7 @@ export default function Home() {
   const translateX = useTransform(scrollXProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       {(isCursorEnabled && loadingComplete) && <CustomCursor brandName={brandName} cursorType={cursorType} />}
       <LoadingScreen onComplete={() => setLoadingComplete(true)} />
       <Background />
@@ -51,7 +52,7 @@ export default function Home() {
       >
         <div className="select-none mt-20 lg:mt-24" onMouseEnter={() => setCursorType('text')} onMouseLeave={() => setCursorType('default')}>
           <h1 className="text-6xl sm:text-7xl font-medium text-[#E9C46A]">Hi! I&apos;m Waleed Aamer.</h1>
-          <TextFade />
+          {loadingComplete && <TextFade />}
         </div>
         {loadingComplete && <Assistant />}
         <DisplayModel />
@@ -177,7 +178,54 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section id="projects" data-observe className="scroll-mt-[60px] flex flex-col justify-center items-center w-screen py-7 md:mt-14 px-4">
+      <section id="projects" data-observe className="scroll-mt-[60px] flex flex-col justify-center items-center w-screen py-7 md:my-14 px-4 space-y-2">
+        <div className="flex gap-1.5">
+          <motion.a target='_blank' href="https://github.com/Waamer"
+            className="group bg-black/10 backdrop-blur-lg border-2 ml-1 border-black/10 p-2 rounded-lg"
+            whileHover={{
+              scale: 1.175,
+              rotate: 3,
+              backgroundColor: "#2A9D8F",
+              transition: { duration: 0.2 }
+            }}
+          >
+            <FaGithub
+              className="size-6 md:size-7 text-[#FFFFF0]"
+              onMouseEnter={() => {setCursorType('clickable')}} 
+              onMouseLeave={() => {setCursorType('default')}}
+            />
+          </motion.a>
+          <motion.a target='_blank' href="https://www.linkedin.com/in/waleed-aamer-866722245"
+            className="bg-black/10 backdrop-blur-lg border-2 border-black/10 p-2 rounded-lg"
+            whileHover={{
+              scale: 1.175,
+              rotate: -3,
+              backgroundColor: "#0077B5",
+              transition: { duration: 0.2 }
+            }}
+          >
+            <FaLinkedin
+              className="size-6 md:size-7 text-[#FFFFF0]"
+              onMouseEnter={() => {setCursorType('clickable')}} 
+              onMouseLeave={() => {setCursorType('default')}}
+            />
+          </motion.a>
+          <motion.a target='_blank' href='mailto:waamer1a@gmail.com'
+            className="bg-black/10 backdrop-blur-lg border-2 border-black/10 p-2 rounded-lg"
+            whileHover={{
+              scale: 1.175,
+              rotate: 3,
+              backgroundColor: "#EA4335",
+              transition: { duration: 0.2 }
+            }}
+          >
+            <MdEmail
+              className="size-[26px] md:size-[30px] text-[#FFFFF0]"
+              onMouseEnter={() => {setCursorType('clickable')}} 
+              onMouseLeave={() => {setCursorType('default')}}
+            />
+          </motion.a>
+        </div>
         <div className="grid max-w-6xl md:grid-cols-2 gap-3">
           <div className="group bg-black/10 backdrop-blur-lg border-2 border-black/10 hover:bg-[#2A9D8F]/30 p-4 rounded-lg flex flex-col sm:flex-row-reverse gap-2.5 transition-all duration-200">
             <div>
@@ -219,7 +267,7 @@ export default function Home() {
               <div>
                 <h1 className="text-xl font-medium text-[#FFFFF0] group-hover:text-[#80FFDB] transition-all duration-200 flex gap-1 items-center">
                   NoteBud
-                  <LuExternalLink className="group-hover:size-[19px] size-4 -mt-0.5 transition-all duration-200" />
+                  <LuExternalLink className="group-hover:size-[19px] group-hover:text-[#80FFDB] size-4 -mt-0.5 transition-all duration-200" />
                 </h1>
                 <p className="leading-tight text-[#FFFFF0]">NoteBud is a NextJS web app with a Convex backend; developed for managing documents and notes with loads of features (spoiler: includes 2 AI features)</p>
                 <div className="flex flex-wrap gap-1.5 mt-1">
@@ -254,7 +302,7 @@ export default function Home() {
               <div>
                 <h1 className="text-xl font-medium text-[#FFFFF0] group-hover:text-[#80FFDB] transition-all duration-200 flex gap-1 items-center">
                   WordQuack
-                  <LuExternalLink className="group-hover:size-[19px] size-4 -mt-0.5 transition-all duration-200" />
+                  <LuExternalLink className="group-hover:size-[19px] group-hover:text-[#80FFDB] size-4 -mt-0.5 transition-all duration-200" />
                 </h1>
                 <p className="leading-tight text-[#FFFFF0]">WordQuack is an JavaFX educational game intended for students of grade 1-6 in which they further enhance their vocabulary and spelling, made with peer CS students (Credits in GitHub)</p>
                 <div className="flex flex-wrap gap-1.5 mt-1">
@@ -286,7 +334,7 @@ export default function Home() {
               <div>
                 <h1 className="text-xl font-medium text-[#FFFFF0] group-hover:text-[#80FFDB] transition-all duration-200 flex gap-1 items-center">
                   My Portfolio Website
-                  <LuExternalLink className="group-hover:size-[19px] size-4 -mt-0.5 transition-all duration-200" />
+                  <LuExternalLink className="group-hover:size-[19px] group-hover:text-[#80FFDB] size-4 -mt-0.5 transition-all duration-200" />
                 </h1>
                 <p className="leading-tight text-[#FFFFF0]">My portfolio website (where you are reading this from!) where I experimented and expanded my creativity in different technologies I have intersets in</p>
                 <div className="flex flex-wrap gap-1.5 mt-1">
@@ -313,16 +361,6 @@ export default function Home() {
           </a>
         </div>
       </section>
-      <section id="contact" data-observe className="scroll-mt-[60px] flex flex-col justify-center items-center h-screen border-2">
-        <a>
-          <FaGithub className="size-8 text-black" />
-        </a>
-        <a>
-          <FaLinkedin className="size-8 text-black" />
-        </a>
-        <h1>Number</h1>
-        <h1>Or just email me</h1>
-      </section>
-    </>
+    </div>
   );
 }

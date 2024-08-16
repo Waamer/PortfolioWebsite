@@ -61,3 +61,17 @@ progress::-webkit-progress-bar {
   pointer-events: none;
   z-index: 999;
 }
+
+@media (min-width: 640px) {
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #E76F51;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #FFFFF0;
+  }
+}

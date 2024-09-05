@@ -26,7 +26,7 @@ const Avatar: React.FC = () => {
 
       waveAction?.play();
 
-      const handleMouseDown = (event: MouseEvent) => {
+      const handleMouseDown = (event: MouseEvent) => { if (event.target instanceof HTMLCanvasElement) {
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
       
@@ -47,8 +47,7 @@ const Avatar: React.FC = () => {
             setIsStumbling(false);
           }, 1850);
         }
-      };
-      
+      }};
 
       const groundGeometry = new THREE.CylinderGeometry(0.6, 0.6, 0.1, 64);
       const groundMaterial = new THREE.MeshStandardMaterial({ color: '#F4A261' });

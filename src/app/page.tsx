@@ -252,7 +252,7 @@ export default function Home() {
             />
             </div>
             <div
-              className="opacity-0 group-hover:opacity-100 absolute w-full inset-0 h-fit my-auto text-center text-[#FFFFF0] text-xl font-medium border-y-2 border-[#2A9D8F] p-4 transition-all duration-200"
+              className="opacity-0 hidden lg:block group-hover:opacity-100 absolute w-full inset-0 h-fit my-auto text-center text-[#FFFFF0] text-xl font-medium border-y-2 border-[#2A9D8F] p-4 transition-all duration-200"
               style={{'background': 'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85) 33px, rgba(42, 157, 143, 0.9) 33px, rgba(42, 157, 143, 0.9) 70px)'}}
             >
               IN PROGRESS

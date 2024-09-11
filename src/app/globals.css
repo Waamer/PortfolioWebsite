@@ -64,14 +64,19 @@ progress::-webkit-progress-bar {
 
 @media (min-width: 640px) {
   ::-webkit-scrollbar {
-    width: 7px;
-  }
+    width: 8px;
+    background: transparent;
+}
 
-  ::-webkit-scrollbar-track {
-    background: #E76F51;
-  }
-
-  ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-track {
     background: #FFFFF0;
-  }
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 20px;
+
+    box-shadow: inset 0 0 0 2px #FFFFF0; /* Match track color to create spacing effect */
+}
+
 }

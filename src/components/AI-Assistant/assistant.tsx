@@ -220,9 +220,9 @@ export function Assistant() {
             <motion.div
                 initial={{ opacity: 0, filter: 'blur(8px)' }}
                 animate={{ opacity: 1, filter: 'blur(0px)' }}
-                whileHover={{ scale: 1.075 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ ease: 'easeInOut', duration: 1, type: "spring", stiffness: 300 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ ease: 'easeInOut', duration: 1, type: "spring", stiffness: 200 }}
                 className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-[9]"
             >
                 <button onClick={() => setIsOpen(isOpen + 1)} className="flex gap-1.5 items-center px-2.5 py-1.5 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#E9C46A]">
@@ -238,7 +238,7 @@ export function Assistant() {
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                     exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
                     transition={{ ease: 'easeInOut', duration: 0.2 }}
-                    className="bg-[#031820]/40 w-screen h-[100dvh] fixed top-0 left-0 z-[21] flex items-center justify-center md:p-6"
+                    className="bg-[#031820]/40 w-screen h-[100dvh] fixed top-0 left-0 z-[21] flex items-center justify-center md:p-6 lg:hidden"
                 >
                     <div className="bg-[#FFFFF0] md:max-w-2xl w-full h-full z-[21] md:rounded-md">
                         <div className="fixed bg-[#FFFFF2] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
@@ -264,6 +264,40 @@ export function Assistant() {
                         </div>
                         <Messages humanMessages={transcripts} AIMessages={AIResponses} />
                     </div>
+                </motion.div>
+            )}
+
+            {isOpen % 2 === 1 && (
+                <motion.div
+                key={isOpen}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ ease: 'easeInOut', duration: 0.2 }}
+                className="hidden lg:block fixed bg-[#FFFFF2] bottom-0 right-5 border-2 border-b-0 border-black min-h-96 max-w-sm w-full rounded-t-lg z-[21]"
+            >
+                    <div className="fixed bg-[#FFFFF2] border-b-2 border-black md:max-w-2xl w-full sm:rounded-t-lg">
+                        <div className="flex gap-2 ml-1.5 my-1">
+                            <button onClick={endCall} className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 text-nowrap">
+                                End Call
+                            </button>
+                            <button onClick={handleToggleRecording} disabled={responseProcessing} className="flex items-center px-1.5 py-1 my-1 rounded-md font-medium bg-[#F4A261] transition-all duration-200 hover:bg-[#F4A261]/70 disabled:bg-[#F4A261]/50 disabled:cursor-not-allowed">
+                                {!isRecording ? (<LuMic className="size-5" />) : <LuStopCircle className="size-5 text-red-600 animate-pulse" />}
+                            </button>
+                            {isRecording && audioStream && <Visualizer audio={audioStream} mode={'continuous'} slices={26} strokeColor='#264653' autoStart={true}>
+                                    {({ canvasRef }) => (
+                                        <canvas ref={canvasRef} height={100} className="w-full max-w-[200px] sm:max-w-[150px] max-h-[40px] mx-0.5 pr-0.5" />
+                                    )}
+                                </Visualizer>}
+                            {AITalking && (
+                                <div className="flex items-center px-2.5 pt-1.5 pb-1 my-1 rounded-md text-sm font-medium bg-[#F4A261]/50 transition-all duration-200 text-nowrap animate-pulse">
+                                    <HiMiniSpeakerWave className="mr-1" />
+                                    Talking
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <Messages humanMessages={transcripts} AIMessages={AIResponses} />
                 </motion.div>
             )}
         </AnimatePresence>

@@ -18,7 +18,7 @@ export function TextFade() {
     }, [words]);
 
     return (
-        <div className="relative h-[70px]">
+        <div className="relative h-[70px] overflow-hidden">
             <AnimatePresence>
                 <motion.span
                     key={currentWord}

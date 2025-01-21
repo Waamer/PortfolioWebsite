@@ -401,7 +401,7 @@ export default function Home() {
                   src={'/shadows.png'}
                   width={200}
                   height={200}
-                  className="w-full min-w-[140px] max-h-24 rounded-md border-2 border-black group-hover:border-[#2A9D8F]/40 transition-all duration-200"
+                  className="w-full min-w-[140px] max-h-60 md:max-h-24 rounded-md border-2 border-black group-hover:border-[#2A9D8F]/40 transition-all duration-200"
                 />
               </div>
             </div>

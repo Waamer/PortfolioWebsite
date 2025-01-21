@@ -8,12 +8,13 @@ import { DisplayModel } from "@/components/3DModel/DisplayModel";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { RiTailwindCssFill } from "react-icons/ri";
-import { SiReact, SiThreedotjs, SiTypescript } from "react-icons/si";
+import { SiCplusplus, SiReact, SiThreedotjs, SiTypescript, SiUnity } from "react-icons/si";
 import { CustomCursor } from "@/components/CustomCursor";
 import { LuConstruction, LuExternalLink } from "react-icons/lu";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { IoLogoJavascript } from "react-icons/io5";
 
 export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false);
@@ -100,11 +101,27 @@ export default function Home() {
                   </div>
                 </a>
                 <a target='_blank' href="https://devdocs.io/c/" className="hover:cursor-pointer">
-                  <div className="bg-[#222222] p-6 size-24 rounded-lg"
+                  <div className="bg-[#FDFCFA] p-6 size-24 rounded-lg"
                     onMouseEnter={() => {setBrandName("C"); setCursorType('brand')}}
                     onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
                   >
                     <i className="ci ci-c ci-3x"></i>
+                  </div>
+                </a>
+                <a target='_blank' href="https://www.w3schools.com/cpp/" className="hover:cursor-pointer">
+                  <div className="bg-[#FDFCFA] p-6 size-24 rounded-lg"
+                    onMouseEnter={() => {setBrandName("C++"); setCursorType('brand')}}
+                    onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
+                  >
+                    <i className="ci ci-cpp ci-3x"></i>
+                  </div>
+                </a>
+                <a target='_blank' href="https://www.w3schools.com/cs/index.php" className="hover:cursor-pointer">
+                  <div className="bg-[#FDFCFA] p-6 size-24 rounded-lg"
+                    onMouseEnter={() => {setBrandName("C#"); setCursorType('brand')}}
+                    onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
+                  >
+                    <i className="ci ci-csharp ci-3x"></i>
                   </div>
                 </a>
                 <a target='_blank' href="https://git-scm.com/" className="hover:cursor-pointer">
@@ -113,6 +130,14 @@ export default function Home() {
                     onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
                   >
                     <i className="ci ci-git ci-3x"></i>
+                  </div>
+                </a>
+                <a target='_blank' href="https://www.w3schools.com/js/" className="hover:cursor-pointer">
+                  <div className="bg-[#151514] p-6 size-24 rounded-lg"
+                    onMouseEnter={() => {setBrandName("JavaScript"); setCursorType('brand')}}  
+                    onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
+                  >
+                    <IoLogoJavascript className="size-14 -mt-1 -ml-1 text-[#f0db4f]" />
                   </div>
                 </a>
                 <a target='_blank' href="https://typescriptlang.org/" className="hover:cursor-pointer">
@@ -169,6 +194,14 @@ export default function Home() {
                     onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
                   >
                     <i className="ci ci-django ci-3x"></i>
+                  </div>
+                </a>
+                <a target='_blank' href="https://unity.com/" className="hover:cursor-pointer">
+                  <div className="bg-white p-6 size-24 rounded-lg"
+                    onMouseEnter={() => {setBrandName("Unity"); setCursorType('brand')}} 
+                    onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
+                  >
+                    <SiUnity className="size-12" />
                   </div>
                 </a>
           </div>
@@ -321,7 +354,7 @@ export default function Home() {
                   WordQuack
                   <LuExternalLink className="group-hover:size-[19px] group-hover:text-[#80FFDB] size-4 -mt-0.5 transition-all duration-200" />
                 </h1>
-                <p className="leading-tight text-[#FFFFF0]">WordQuack is an JavaFX educational game intended for students of grade 1-6 in which they further enhance their vocabulary and spelling, made with peer CS students (Credits in GitHub)</p>
+                <p className="leading-tight text-[#FFFFF0]">WordQuack is an JavaFX educational game intended for students of grade 1-6 in which they further enhance their vocabulary and spelling, made with peer CS students for CS2212 (Credits in GitHub)</p>
                 <div className="flex flex-wrap gap-1.5 mt-1">
                   <p className="text-[#80FFDB] bg-[#2A9D8F]/40 py-1 px-2 text-sm font-medium rounded-md w-fit">JavaFX</p>
                   <p className="text-[#80FFDB] bg-[#2A9D8F]/40 py-1 px-2 text-sm font-medium rounded-md w-fit">MaterialFX</p>
@@ -338,6 +371,37 @@ export default function Home() {
                   width={200}
                   height={200}
                   className="w-full min-w-[140px] h-auto rounded-md border-2 border-black group-hover:border-[#2A9D8F]/40 transition-all duration-200"
+                />
+              </div>
+            </div>
+          </a>
+          <a target='_blank' href="https://github.com/Waamer/ShadowsWithin_LoJamGame">
+            <div
+              className="group bg-black/10 backdrop-blur-lg border-2 h-full border-black/10 hover:bg-[#2A9D8F]/30 cursor-pointer p-4 rounded-lg flex flex-col sm:flex-row-reverse gap-2.5 transition-all duration-200"
+              onMouseEnter={() => {setBrandName("Shadows Within"); setCursorType('brand')}}
+              onMouseLeave={() => {setBrandName(undefined); setCursorType('default')}}
+            >
+              <div>
+                <h1 className="text-xl font-medium text-[#FFFFF0] group-hover:text-[#80FFDB] transition-all duration-200 flex gap-1 items-center">
+                  Shadows Within
+                  <LuExternalLink className="group-hover:size-[19px] group-hover:text-[#80FFDB] size-4 -mt-0.5 transition-all duration-200" />
+                </h1>
+                <p className="leading-tight text-[#FFFFF0]">Shadows Within is a 2D pixel art game where overcoming inner demons (literally) grants new abilities and drives self-acceptance. Made with peer CS Students for Lo Jam (Credits in GitHub)</p>
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  <p className="text-[#80FFDB] bg-[#2A9D8F]/40 py-1 px-2 text-sm font-medium rounded-md w-fit">Unity</p>
+                  <p className="text-[#80FFDB] bg-[#2A9D8F]/40 py-1 px-2 text-sm font-medium rounded-md w-fit">C#</p>
+                  <p className="text-[#80FFDB] bg-[#2A9D8F]/40 py-1 px-2 text-sm font-medium rounded-md w-fit">Asprite</p>
+                  <p className="text-[#80FFDB] bg-[#2A9D8F]/40 py-1 px-2 text-sm font-medium rounded-md w-fit">Git</p>
+                  <p className="text-[#80FFDB] bg-[#2A9D8F]/40 py-1 px-2 text-sm font-medium rounded-md w-fit">Team Management</p>
+                </div>
+              </div>
+              <div>
+                <Image 
+                  alt={'Portfolio website screenshot'}
+                  src={'/shadows.png'}
+                  width={200}
+                  height={200}
+                  className="w-full min-w-[140px] max-h-24 rounded-md border-2 border-black group-hover:border-[#2A9D8F]/40 transition-all duration-200"
                 />
               </div>
             </div>

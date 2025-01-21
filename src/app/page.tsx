@@ -225,6 +225,23 @@ export default function Home() {
               onMouseLeave={() => {setCursorType('default')}}
             />
           </motion.a>
+          <motion.a target='_blank' href='https://drive.google.com/file/d/12RC7iKGMF4WnAjELQXm0JTQr8CJyzhQE/view?usp=sharing'
+            className="bg-black/10 backdrop-blur-lg border-2 border-black/10 p-2 rounded-lg group"
+            whileHover={{
+              scale: 1.15,
+              rotate: -1.5,
+              backgroundColor: "#F4A261",
+              transition: { duration: 0.2 }
+            }}
+          >
+            <h2
+              className="text-xl font-medium text-[#FFFFF0] group-hover:scale-105  transition-all duration-200"
+              onMouseEnter={() => {setCursorType('clickable')}} 
+              onMouseLeave={() => {setCursorType('default')}}
+            >
+              Resume
+            </h2>
+          </motion.a>
         </div>
         <div className="grid max-w-6xl md:grid-cols-2 gap-3">
           <div className="group bg-black/10 backdrop-blur-lg border-2 border-black/10 hover:bg-[#2A9D8F]/30 p-4 rounded-lg flex flex-col sm:flex-row-reverse gap-2.5 transition-all duration-200">

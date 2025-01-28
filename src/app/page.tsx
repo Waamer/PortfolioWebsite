@@ -72,13 +72,22 @@ export default function Home() {
             </h1>
           </div>
           <div className="bg-black/10 backdrop-blur-lg border-2 border-black/10 flex flex-col items-center justify-center p-6 pb-4 rounded-lg">
-            <Image
-              alt={'picture of me in a suit!'}
-              src={'/selfie.png'}
-              width={250}
-              height={250}
-              className="rounded-lg"
-            />
+            <div className="group">
+              <Image
+                alt={'picture of me in a suit!'}
+                src={'/selfie.png'}
+                width={250}
+                height={250}
+                className="rounded-lg"
+              />
+              <Image
+                alt={'star'}
+                src={"/CS_Star_12.svg"}
+                width={90}
+                height={90}
+                className="absolute -top-2 -right-2 hidden lg:block duration-300 group-hover:scale-[1.1] group-hover:-rotate-6"
+              />
+            </div>
             <p className="text-sm mt-1 leading-snug font-medium text-[#FFFFF0]">
               Proof that I look like my 3D Model!
             </p>
